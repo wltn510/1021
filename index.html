@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: lightgray;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .box {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: white;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            border-radius: 20px; 
+        }
+        .box .percent {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+        .box .percent svg {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            transform: rotate(-90deg); /* 시계방향으로 회전 */
+        }
+        .box .percent svg circle {
+            fill: none;
+            stroke-width: 10;
+            transform: translate(5px, 5px); /* 잘리는 부분 교정 */
+            stroke-dasharray: 440;
+            stroke-linecap: round;
+        }
+        .box .percent svg circle:nth-child(1) {
+            stroke-dashoffset: 0;
+            stroke: #f3f3f3;
+        }
+        .box:nth-child(1) .percent svg circle:nth-child(2) {
+            stroke: #006acd;
+            stroke-dashoffset: 440; /* 초기 값 */
+            animation: progressCircle1 1s linear forwards;
+        }
+        .box:nth-child(2) .percent svg circle:nth-child(2) {
+            stroke: #e9981e; 
+            stroke-dashoffset: 440;
+            animation: progressCircle2 1s linear forwards;
+        }
+        .box:nth-child(3) .percent svg circle:nth-child(2) {
+            stroke: #72009c; 
+            stroke-dashoffset: 440;
+            animation: progressCircle3 1s linear forwards;
+        }
+
+        @keyframes progressCircle1 {
+            100% {
+                stroke-dashoffset: 22; /* 95% */
+            }
+        }
+        @keyframes progressCircle2 {
+            100% {
+                stroke-dashoffset: 44; /* 90% */
+            }
+        }
+        @keyframes progressCircle3 {
+            100% {
+                stroke-dashoffset: 154; /* 65% */
+            }
+        }
+
+        .box .percent .number {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #111;
+        }
+        .box .text {
+            margin-top: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="percent">
+                <svg>
+                    <circle cx="70" cy="70" r="70"></circle>
+                    <circle cx="70" cy="70" r="70"></circle>
+                </svg>
+                <div class="number">
+                    <h2><span class="num" data-target="95">0</span>%</h2>
+                </div>
+            </div>
+            <h2 class="text">Photoshop</h2>
+        </div>
+        <div class="box">
+            <div class="percent">
+                <svg>
+                    <circle cx="70" cy="70" r="70"></circle>
+                    <circle cx="70" cy="70" r="70"></circle>
+                </svg>
+                <div class="number">
+                    <h2><span class="num" data-target="90">0</span>%</h2>
+                </div>
+            </div>
+            <h2 class="text">Illustrator</h2>
+        </div>
+        <div class="box">
+            <div class="percent">
+                <svg>
+                    <circle cx="70" cy="70" r="70"></circle>
+                    <circle cx="70" cy="70" r="70"></circle>
+                </svg>
+                <div class="number">
+                    <h2><span class="num" data-target="65">0</span>%</h2>
+                </div>
+            </div>
+            <h2 class="text">After Effects</h2>
+        </div>
+    </div>
+
+    <script>
+        // 숫자 증가 애니메이션
+        const counters = document.querySelectorAll('.num');
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target'); // 목표 값
+                const count = +counter.innerText; // 현재 값
+                const speed = 200; // 속도 설정
+                const increment = target / speed; // 증가치
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(updateCount, 10); // 반복적으로 증가
+                } else {
+                    counter.innerText = target; // 목표값 도달 시 고정
+                }
+            };
+            updateCount();
+        });
+    </script>
+</body>
+</html>
